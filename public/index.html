@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Create a Poll</title>
+</head>
+<body>
+  <h1>Create a Poll</h1>
+
+  <input id="title" placeholder="Poll Title"><br><br>
+  <input id="caption" placeholder="Poll Caption"><br><br>
+  <input id="options" placeholder="Options (comma-separated)"><br><br>
+
+  <button onclick="createPoll()">Create Poll</button>
+
+  <script>
+    function createPoll() {
+      const title = document.getElementById('title').value;
+      const caption = document.getElementById('caption').value;
+      const options = document.getElementById('options').value.split(',').map(opt => opt.trim());
+
+      fetch('http://localhost:3000/polls', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ title, caption, options })
+      })
+      .then(response => response.json())
+      .then(data => {
+        alert("Poll created successfully!");
+        console.log(data);
+      })
+      .catch(error => {
+        alert("Error creating poll");
+        console.error(error);
+      });
+    }
+  </script>
+</body>
+</html>
